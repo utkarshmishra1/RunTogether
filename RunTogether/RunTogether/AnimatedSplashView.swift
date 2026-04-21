@@ -161,8 +161,8 @@ private struct BrandView: View {
 
                 // Tagline
                 VStack(spacing: 2) {
-                    Text("Stronger together.")
-                    Text("Every step counts.")
+                    Text("Miles are better shared.")
+//                    Text("Every step counts.")
                 }
                 .font(.system(size: 18, weight: .regular, design: .rounded))
                 .foregroundColor(Palette.tagline)
