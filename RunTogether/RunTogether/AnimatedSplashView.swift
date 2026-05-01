@@ -6,12 +6,16 @@
 import SwiftUI
 
 struct AnimatedSplashView: View {
+    /// Persisted across launches — flips to true the first time the user
+    /// finishes onboarding, and the onboarding flow is skipped from then on.
+    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding: Bool = false
+
     @State private var isDone = false
     @State private var onboardingFinished = false
 
     var body: some View {
         ZStack {
-            if onboardingFinished {
+            if isDone && (hasCompletedOnboarding || onboardingFinished) {
                 ContentView().transition(.opacity)
             } else if isDone {
                 OnboardingView().transition(.opacity)
@@ -21,6 +25,7 @@ struct AnimatedSplashView: View {
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .onboardingFinished)) { _ in
+            hasCompletedOnboarding = true
             withAnimation(.easeInOut(duration: 0.4)) { onboardingFinished = true }
         }
     }
