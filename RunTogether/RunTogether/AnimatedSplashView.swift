@@ -7,15 +7,21 @@ import SwiftUI
 
 struct AnimatedSplashView: View {
     @State private var isDone = false
+    @State private var onboardingFinished = false
 
     var body: some View {
         ZStack {
-            if isDone {
+            if onboardingFinished {
                 ContentView().transition(.opacity)
+            } else if isDone {
+                OnboardingView().transition(.opacity)
             } else {
                 SplashContent(onFinish: { withAnimation(.easeInOut(duration: 0.5)) { isDone = true } })
                     .transition(.opacity)
             }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .onboardingFinished)) { _ in
+            withAnimation(.easeInOut(duration: 0.4)) { onboardingFinished = true }
         }
     }
 }
