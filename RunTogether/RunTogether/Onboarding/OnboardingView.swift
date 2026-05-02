@@ -18,11 +18,20 @@ struct OnboardingView: View {
             OnboardingBackground()
 
             GeometryReader { geo in
-                ZStack {
-                    // Screens stacked, slid horizontally
-                    screensStack(width: geo.size.width)
+                let topInset = geo.safeAreaInsets.top
+                let bottomInset = geo.safeAreaInsets.bottom
 
-                    // Skip button
+                ZStack {
+                    // Screens stacked, slid horizontally. We push their content
+                    // down/up by the safe area insets so the brand mark, the
+                    // headlines, and the bottom padding all sit inside the
+                    // readable area while the background still extends edge to
+                    // edge underneath.
+                    screensStack(width: geo.size.width)
+                        .padding(.top, topInset)
+                        .padding(.bottom, bottomInset)
+
+                    // Skip button — kept clear of the status bar
                     if current < total - 1 {
                         Button("Skip") {
                             withAnimation(.easeInOut(duration: 0.35)) {
@@ -31,21 +40,22 @@ struct OnboardingView: View {
                         }
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(OnboardingTheme.textSoft)
-                        .padding(.top, 12)
+                        .padding(.top, topInset + 12)
                         .padding(.trailing, 24)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                         .transition(.opacity)
                     }
 
-                    // Footer
+                    // Footer — kept clear of the home indicator
                     footer
                         .padding(.horizontal, 24)
-                        .padding(.bottom, 26)
+                        .padding(.bottom, bottomInset + 26)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                 }
                 .frame(width: geo.size.width, height: geo.size.height)
             }
         }
+        .ignoresSafeArea()
         .preferredColorScheme(.dark)
         .gesture(
             DragGesture(minimumDistance: 18)
