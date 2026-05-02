@@ -31,7 +31,6 @@ struct OnboardingView: View {
                         .padding(.top, topInset)
                         .padding(.bottom, bottomInset)
 
-                    // Skip button — kept clear of the status bar
                     if current < total - 1 {
                         Button("Skip") {
                             withAnimation(.easeInOut(duration: 0.35)) {
@@ -40,7 +39,7 @@ struct OnboardingView: View {
                         }
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(OnboardingTheme.textSoft)
-                        .padding(.top, topInset + 12)
+                        .padding(.top, 60)
                         .padding(.trailing, 24)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                         .transition(.opacity)
@@ -49,7 +48,7 @@ struct OnboardingView: View {
                     // Footer — kept clear of the home indicator
                     footer
                         .padding(.horizontal, 24)
-                        .padding(.bottom, bottomInset + 26)
+                        .padding(.bottom, bottomInset + 56)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                 }
                 .frame(width: geo.size.width, height: geo.size.height)
